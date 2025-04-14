@@ -1,15 +1,18 @@
 # Course_GT3
-Projet de Terminal 
-
+Projet de Terminal 2023-2024
 
 ## AVANT DE JOUER AU JEU :
-- Installez les modules "pytmx", "pyscroll" et "dataclasses" dans votre logiciel "EduPython". 
-> explication.exe
+  Installez les modules "pygame", "pytmx", "pyscroll" et "dataclasses". 
+> Pour se faire, lancez le terminal de votre ordinateur et faite : 
+> - pip install pygame
+> - pip install pytmx
+> - pip install pyscroll
+> - pip install dataclasses
 
 ## REGLE :
 - Faire une tour de circuit le plus rapidement possible
 - Si vous touchez l'herbe, vous serez ralenti
-- Si vous touchez le gravier, vous serez grandement ralenti et arrêtez
+- Si vous touchez le gravier, vous serez grandement ralenti et/ou arrêtez
 
 ## COMMANDE :
 - Flèche directionnelle pour se déplacer. 
