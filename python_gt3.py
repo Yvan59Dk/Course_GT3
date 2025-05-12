@@ -150,8 +150,6 @@ class MapManager:
             Portal(from_world="house", origin_point="exit_house", target_world="world", teleport_point="enter_house_exit")
         ])"""
 
-        self.teleport_player()
-
     def check_objet(self):
         # portails
         """
@@ -193,9 +191,9 @@ class MapManager:
                         self.player.speed[i] = 2
 
 
-    def teleport_player(self):
-        self.player.position[0] = 1611.33
-        self.player.position[1] = 333.67
+    def teleport_player(self,x,y):
+        self.player.position[0] = x
+        self.player.position[1] = y
         self.player.save_location()
 
     def register_map(self, name):
@@ -269,14 +267,17 @@ class MapManager:
 class Game:
 
     def __init__(self):
-        # fenetre
+
+        # Fenêtre
         self.screen = pygame.display.set_mode((1000, 800))
         self.rect = self.screen.get_rect()
-        pygame.display.set_caption("GT3")
+        pygame.display.set_caption("Course GT3")
 
-        #generer un joueur
+        # Gérerer le chrono
         self.chrono = Chrono(time())
-        self.player = Player(0, 0)
+
+        # Génerer un joueur
+        self.player = Player(1611.33, 333.67)
         self.map_manager = MapManager(self.screen, self.player)
 
     def handle_imput(self):
@@ -319,11 +320,10 @@ class Game:
     def run(self):
         clock = pygame.time.Clock()
 
-        # boue jeu
+        # Boucle du jeu
         running = True
 
         while running:
-
             self.player.save_location()
             self.handle_imput()
             self.player.move()
