@@ -30,17 +30,17 @@ class Player(pygame.sprite.Sprite):
         self.sound2 = pygame.mixer.Sound('music/pneu2.ogg')
         self.sound2.set_volume(0.3)
         self.sprite_sheet = pygame.image.load("sprites/player_x1.png")
-        self.image = self.get_image(0, 0)
+        self.item_sheet = pygame.image.load("sprites/item.png")
+        self.image = self.get_image(self.sprite_sheet, 0, 0)
         self.image.set_colorkey([255, 0, 255])
-        print(self.image.get_colorkey())
         self.rect = self.image.get_rect()
         self.anime = [ 0, 0 ]
         self.position = [x, y]
         self.images = {
-            'down' : self.get_image(0, 0),
-            'left': self.get_image(0, 64*reso),
-            'right': self.get_image(0, 64*reso*2),
-            'up': self.get_image(0, 64*reso*3)
+            'down' : self.get_image(self.sprite_sheet, 0, 0),
+            'left': self.get_image(self.sprite_sheet, 0, 64*reso),
+            'right': self.get_image(self.sprite_sheet, 0, 64*reso*2),
+            'up': self.get_image(self.sprite_sheet, 0, 64*reso*3)
         }
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
     def save_location(self): self.old_position = self.position.copy()
 
     def change_animation(self):
-        self.image = self.get_image(floor(self.anime[0])*32, floor(self.anime[1])*32)
+        self.image = self.get_image(self.sprite_sheet, floor(self.anime[0])*32, floor(self.anime[1])*32)
         self.image.set_colorkey([255, 0, 255])
 
     def change_vitesse(self, L):
@@ -98,13 +98,13 @@ class Player(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
         self.speed = [self.speed[1]/2,self.speed[0]/2,self.speed[3]/2,self.speed[2]/2]
 
-    def get_image(self, x, y):
+    def get_image(self, sheet, x, y):
         image = pygame.Surface([32*reso,32*reso])
-        image.blit(self.sprite_sheet, (0, 0), (x, y, 32*reso, 32*reso))
+        image.blit(sheet, (0, 0), (x, y, 32*reso, 32*reso))
         return image
 
     def get_DT(self):
-        image = self.get_image(96, 0)
+        image = self.get_image(self.item_sheet, 0, 0)
         image.set_colorkey([255, 0, 255])
         return image
 
@@ -342,7 +342,7 @@ class Game:
 if __name__ == '__main__' :
     pygame.init()
     pygame.mixer.init()
-    music = pygame.mixer.music.load("music/Jeu_Gabriel.ogg")
+    music = pygame.mixer.music.load("music/Jeu_Yvan.ogg")
     pygame.mixer.music.play(-1, 0.0)
 
     game = Game()
