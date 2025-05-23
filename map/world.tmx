@@ -85,7 +85,7 @@
 13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13
 </data>
  </layer>
- <objectgroup id="7" name="Test_direction" visible="0">
+ <objectgroup id="7" name="Test_direction">
   <object id="654" name="TD_Start" type="verf_sortieOuest" x="962.667" y="128" width="1338.67" height="350.667"/>
   <object id="655" name="TD_V1-2" type="verf_sortieSud" x="668" y="904" width="292" height="176"/>
   <object id="656" name="TD_V2-3" type="verf_sortieEst" x="1412" y="1306" width="662" height="100"/>
@@ -94,7 +94,7 @@
   <object id="659" name="TD_V5-6" type="verf_sortieOuest" x="2360" y="1060" width="274" height="224"/>
   <object id="660" name="TD_V6-7" type="verf_sortieEst" x="2148" y="594" width="604" height="238"/>
  </objectgroup>
- <objectgroup id="3" name="Colli" visible="0">
+ <objectgroup id="3" name="Colli">
   <object id="515" name="Start_col_1" type="collision" x="1024" y="253" width="1216" height="68"/>
   <object id="516" name="Start_col_2" type="collision" x="2241" y="320" width="63" height="34"/>
   <object id="517" name="Start_col_3" type="collision" x="961" y="320" width="64" height="33"/>
@@ -234,14 +234,14 @@
   <object id="652" name="V7_col_8" type="collision" x="3040.67" y="351.333" width="63.3333" height="33.3333"/>
   <object id="653" name="V7_col_9" type="collision" x="2656" y="512" width="32.6667" height="64.6667"/>
  </objectgroup>
- <objectgroup id="13" name="Test_Tour" visible="0">
+ <objectgroup id="13" name="Test_Tour">
   <object id="356" name="TT" type="test_tour" x="1505.33" y="320.667" width="31.3333" height="158.667"/>
   <object id="357" name="TT_Stand" type="test_tour" x="1664.67" y="193.334" width="31" height="61.3333"/>
  </objectgroup>
- <objectgroup id="9" name="Pit_Limiter" visible="0">
+ <objectgroup id="9" name="Pit_Limiter">
   <object id="358" name="Pit_Limiter" type="pitLane" x="921.663" y="189.334" width="1485.83" height="97.3333"/>
  </objectgroup>
- <objectgroup id="5" name="Herbe" visible="0">
+ <objectgroup id="5" name="Herbe">
   <object id="434" name="V1_H_1" type="herbe" x="383" y="574.5" width="32.5" height="98.5"/>
   <object id="435" name="V1_H_2" type="herbe" x="415.5" y="671.5" width="32.5" height="33.5"/>
   <object id="436" name="V1_H_3" type="herbe" x="446" y="703.5" width="33.5" height="33.5"/>
@@ -390,7 +390,7 @@
   <object id="431" name="V7_G_14" type="sable" x="2686" y="511" width="161" height="33"/>
   <object id="432" name="V7_G_15" type="sable" x="2686" y="543" width="257" height="64"/>
  </objectgroup>
- <objectgroup id="4" name="player" class="player" visible="0">
+ <objectgroup id="4" name="player" class="player">
   <object id="91" x="1614" y="413.003">
    <point/>
   </object>
