@@ -124,10 +124,10 @@ class Map:
     walls: list
     sable : list
     herbe : list
-    verf_S : list
-    verf_N : list
-    verf_O : list
-    verf_E : list
+    verf_sortieSud : list
+    verf_sortieNord : list
+    verf_sortieOuest : list
+    verf_sortieEst : list
     test_tour : list
     pitLane : list
     group: pyscroll.PyscrollGroup
@@ -171,16 +171,16 @@ class MapManager:
                 self.player.change_vitesse( [-0.35, -0.35, -0.35, -0.35] )
             elif sprite.feet.collidelist(self.get_herbe()) > -1:
                 self.player.change_vitesse( [-0.07, -0.07, -0.07, -0.07] )
-            if sprite.feet.collidelist(self.get_verf_N()) > -1:
+            if sprite.feet.collidelist(self.get_verf_sortieNord()) > -1:
                 if self.player.speed[0] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_verf_S()) > -1:
+            if sprite.feet.collidelist(self.get_verf_sortieSud()) > -1:
                 if self.player.speed[1] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_verf_E()) > -1:
+            if sprite.feet.collidelist(self.get_verf_sortieEst()) > -1:
                 if self.player.speed[3] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_verf_O()) > -1:
+            if sprite.feet.collidelist(self.get_verf_sortieOuest()) > -1:
                 if self.player.speed[2] > 2 :
                     self.wrong_way_V = True
             if sprite.feet.collidelist(self.get_test_tour()) > -1:
@@ -201,16 +201,16 @@ class MapManager:
         tmx_data = pytmx.util_pygame.load_pygame(f"map/{name}.tmx")
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        map_layer.zoom = 1.7
+        map_layer.zoom = 1.5
 
         # liste collision
         walls = []
         sable = []
         herbe = []
-        verf_N = []
-        verf_S = []
-        verf_E = []
-        verf_O = []
+        verf_sortieNord = []
+        verf_sortieSud = []
+        verf_sortieEst = []
+        verf_sortieOuest = []
         test_tour = []
         pitLane = []
 
@@ -221,14 +221,14 @@ class MapManager:
                 sable.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             if obj.type == "herbe":
                 herbe.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "verf_N":
-                verf_N.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "verf_S":
-                verf_S.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "verf_E":
-                verf_E.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "verf_O":
-                verf_O.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "verf_sortieNord":
+                verf_sortieNord.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "verf_sortieSud":
+                verf_sortieSud.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "verf_sortieEst":
+                verf_sortieEst.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "verf_sortieOuest":
+                verf_sortieOuest.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             if obj.type == "test_tour":
                 test_tour.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             if obj.type == "pitLane":
@@ -240,17 +240,17 @@ class MapManager:
         group.add(self.player)
 
         # save map
-        self.maps[name] = Map(name, walls, sable, herbe, verf_N, verf_S, verf_E, verf_O, test_tour, pitLane, group, tmx_data)
+        self.maps[name] = Map(name, walls, sable, herbe, verf_sortieNord, verf_sortieSud, verf_sortieEst, verf_sortieOuest, test_tour, pitLane, group, tmx_data)
 
     def get_map(self): return self.maps[self.current_map]
     def get_group(self): return self.get_map().group
     def get_walls(self): return self.get_map().walls
     def get_sable(self): return self.get_map().sable
     def get_herbe(self): return self.get_map().herbe
-    def get_verf_S(self): return self.get_map().verf_S
-    def get_verf_N(self): return self.get_map().verf_N
-    def get_verf_O(self): return self.get_map().verf_O
-    def get_verf_E(self): return self.get_map().verf_E
+    def get_verf_sortieSud(self): return self.get_map().verf_sortieSud
+    def get_verf_sortieNord(self): return self.get_map().verf_sortieNord
+    def get_verf_sortieOuest(self): return self.get_map().verf_sortieOuest
+    def get_verf_sortieEst(self): return self.get_map().verf_sortieEst
     def get_test_tour(self): return self.get_map().test_tour
     def get_pitLane(self): return self.get_map().pitLane
     def get_object(self, name): return self.get_map().tmx_data.get_object_by_name(name)
@@ -277,7 +277,8 @@ class Game:
         self.chrono = Chrono(time())
 
         # Génerer un joueur
-        self.player = Player(1611.33, 333.67)
+        # PS : le faire directement avec les données de .tmx
+        self.player = Player(1614.00, 413.00)
         self.map_manager = MapManager(self.screen, self.player)
 
     def handle_imput(self):
