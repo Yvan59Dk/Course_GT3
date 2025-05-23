@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.get_image(self.sprite_sheet, 0, 0)
         self.image.set_colorkey([255, 0, 255])
         self.rect = self.image.get_rect()
-        self.anime = [ 0, 0 ]
+        self.anime = [0, 0]
         self.position = [x, y]
         self.images = {
             'down' : self.get_image(self.sprite_sheet, 0, 0),
@@ -83,10 +83,10 @@ class Player(pygame.sprite.Sprite):
                 self.sound2.play()
 
 
-    def move_right(self): self.change_vitesse( [0, 0, 0, 0.25] )
-    def move_left(self): self.change_vitesse( [0, 0, 0.25, 0] )
-    def move_up(self): self.change_vitesse( [0.25, 0, 0, 0] )
-    def move_down(self): self.change_vitesse( [0, 0.25, 0, 0] )
+    def move_right(self): self.change_vitesse( [0, 0, 0, 0.3] )
+    def move_left(self): self.change_vitesse( [0, 0, 0.3, 0] )
+    def move_up(self): self.change_vitesse( [0.3, 0, 0, 0] )
+    def move_down(self): self.change_vitesse( [0, 0.3, 0, 0] )
 
     def update(self):
         self.rect.topleft = self.position
@@ -103,13 +103,13 @@ class Player(pygame.sprite.Sprite):
         image.blit(sheet, (0, 0), (x, y, 32*reso, 32*reso))
         return image
 
-    def get_DT(self):
+    def get_wrong_way(self):
         image = self.get_image(self.item_sheet, 0, 0)
         image.set_colorkey([255, 0, 255])
         return image
 
-    def update_DT(self):
-        self.image = self.get_DT()
+    def update_wrong_way(self):
+        self.image = self.get_wrong_way()
 
 @dataclass
 class Portal:
@@ -129,7 +129,7 @@ class Map:
     verf_O : list
     verf_E : list
     test_tour : list
-    PL : list
+    pitLane : list
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
 
@@ -139,7 +139,7 @@ class MapManager:
         self.maps = dict()
         self.screen = screen
         self.player = player
-        self.DT_V = False
+        self.wrong_way_V = False
         self.chrono_V = False
         self.current_map = "world"
         #self.win = False
@@ -173,22 +173,22 @@ class MapManager:
                 self.player.change_vitesse( [-0.07, -0.07, -0.07, -0.07] )
             if sprite.feet.collidelist(self.get_verf_N()) > -1:
                 if self.player.speed[0] > 2 :
-                    self.DT_V = True
+                    self.wrong_way_V = True
             if sprite.feet.collidelist(self.get_verf_S()) > -1:
                 if self.player.speed[1] > 2 :
-                    self.DT_V = True
+                    self.wrong_way_V = True
             if sprite.feet.collidelist(self.get_verf_E()) > -1:
                 if self.player.speed[3] > 2 :
-                    self.DT_V = True
+                    self.wrong_way_V = True
             if sprite.feet.collidelist(self.get_verf_O()) > -1:
                 if self.player.speed[2] > 2 :
-                    self.DT_V = True
+                    self.wrong_way_V = True
             if sprite.feet.collidelist(self.get_test_tour()) > -1:
                 self.chrono_V = True
-            if sprite.feet.collidelist(self.get_PL()) > -1:
+            if sprite.feet.collidelist(self.get_pitLane()) > -1:
                 for i in range(len(self.player.speed)):
-                    if self.player.speed[i] > 2 :
-                        self.player.speed[i] = 2
+                    if self.player.speed[i] > 3 :
+                        self.player.speed[i] = 3
 
 
     def teleport_player(self,x,y):
@@ -212,7 +212,7 @@ class MapManager:
         verf_E = []
         verf_O = []
         test_tour = []
-        PL = []
+        pitLane = []
 
         for obj in tmx_data.objects:
             if obj.type == "collision":
@@ -231,8 +231,8 @@ class MapManager:
                 verf_O.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             if obj.type == "test_tour":
                 test_tour.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "PL":
-                PL.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "pitLane":
+                pitLane.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
 
         # dessiner groupe calque
@@ -240,7 +240,7 @@ class MapManager:
         group.add(self.player)
 
         # save map
-        self.maps[name] = Map(name, walls, sable, herbe, verf_N, verf_S, verf_E, verf_O, test_tour, PL, group, tmx_data)
+        self.maps[name] = Map(name, walls, sable, herbe, verf_N, verf_S, verf_E, verf_O, test_tour, pitLane, group, tmx_data)
 
     def get_map(self): return self.maps[self.current_map]
     def get_group(self): return self.get_map().group
@@ -252,7 +252,7 @@ class MapManager:
     def get_verf_O(self): return self.get_map().verf_O
     def get_verf_E(self): return self.get_map().verf_E
     def get_test_tour(self): return self.get_map().test_tour
-    def get_PL(self): return self.get_map().PL
+    def get_pitLane(self): return self.get_map().pitLane
     def get_object(self, name): return self.get_map().tmx_data.get_object_by_name(name)
 
     def draw(self):
@@ -312,9 +312,9 @@ class Game:
             self.map_manager.chrono_V = False
         else:
             self.chrono.update()
-        if self.map_manager.DT_V == True :
-            self.player.update_DT()
-            self.map_manager.DT_V = False
+        if self.map_manager.wrong_way_V == True :
+            self.player.update_wrong_way()
+            self.map_manager.wrong_way_V = False
 
 
     def run(self):
