@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.sound1.set_volume(0.3)
         self.sound2 = pygame.mixer.Sound('./assets/music/pneu2.ogg')
         self.sound2.set_volume(0.3)
-        self.sprite_sheet = pygame.image.load("./assets/sprites/player_x1.png")
+        self.sprite_sheet = pygame.image.load("./assets/sprites/player.png")
         self.item_sheet = pygame.image.load("./assets/sprites/item.png")
         self.image = self.get_image(self.sprite_sheet, 0, 0)
         self.image.set_colorkey([255, 0, 255])

@@ -1,8 +1,6 @@
 import pygame
 from program.Game import *
 
-reso = 1
-
 if __name__ == '__main__' :
     pygame.init()
     pygame.mixer.init()
