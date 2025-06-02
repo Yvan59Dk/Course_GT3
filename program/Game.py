@@ -17,12 +17,12 @@ class Game:
         self.rect = self.screen.get_rect()
         pygame.display.set_caption("Course GT3")
 
-        # Gérerer le chrono
+        # Gérere le chrono
         self.chrono = Chrono(time())
 
-        # Génerer un joueur
+        # Génere un joueur
         # PS : le faire directement avec les données de .tmx
-        self.player = Player(1614.00, 413.00)
+        self.player = Player()
         self.map_manager = MapManager(self.screen, self.player)
 
     def handle_imput(self):
@@ -44,7 +44,7 @@ class Game:
             self.player.move_right()
             self.player.anime[1] = 2
             self.player.move_anime()
-        self.player.change_animation()
+        self.player.load_sprite()
 
     def draw(self):
         self.map_manager.draw()
@@ -64,6 +64,7 @@ class Game:
 
     def run(self):
         clock = pygame.time.Clock()
+        self.map_manager.teleport_player(self.map_manager.get_spawn()[0][0],self.map_manager.get_spawn()[0][1])
 
         # Boucle du jeu
         running = True

@@ -25,6 +25,7 @@ class Map:
     verf_sortieEst : list
     test_tour : list
     pitLane : list
+    spawn : list
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
 
@@ -53,34 +54,37 @@ class MapManager:
                 point = self.get_object(portal.origin_point)
                 rect = pygame.Rect(point.x, point.y, point.width, point.height)
 
-                if self.player.feet.colliderect(rect):
+                if self.playee.hitbox.colliderect(rect):
                     copy_portal = portal
                     self.current_map = portal.target_world
                     self.teleport_player(copy_portal.teleport_point)"""
 
         # collision
         for sprite in self.get_group().sprites():
-            if sprite.feet.collidelist(self.get_walls()) > -1:
+            if sprite.hitbox.collidelist(self.get_walls()) > -1:
                 sprite.move_back()
-            if sprite.feet.collidelist(self.get_sable()) > -1:
-                self.player.change_vitesse( [-0.35, -0.35, -0.35, -0.35] )
-            elif sprite.feet.collidelist(self.get_herbe()) > -1:
-                self.player.change_vitesse( [-0.07, -0.07, -0.07, -0.07] )
-            if sprite.feet.collidelist(self.get_verf_sortieNord()) > -1:
+                
+            if sprite.hitbox.collidelist(self.get_sable()) > -1:
+                self.player.change_speed( [-0.35, -0.35, -0.35, -0.35] )
+            elif sprite.hitbox.collidelist(self.get_herbe()) > -1:
+                self.player.change_speed( [-0.07, -0.07, -0.07, -0.07] )
+
+            if sprite.hitbox.collidelist(self.get_verf_sortieNord()) > -1:
                 if self.player.speed[0] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_verf_sortieSud()) > -1:
+            elif sprite.hitbox.collidelist(self.get_verf_sortieSud()) > -1:
                 if self.player.speed[1] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_verf_sortieEst()) > -1:
+            elif sprite.hitbox.collidelist(self.get_verf_sortieEst()) > -1:
                 if self.player.speed[3] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_verf_sortieOuest()) > -1:
+            elif sprite.hitbox.collidelist(self.get_verf_sortieOuest()) > -1:
                 if self.player.speed[2] > 2 :
                     self.wrong_way_V = True
-            if sprite.feet.collidelist(self.get_test_tour()) > -1:
+
+            if sprite.hitbox.collidelist(self.get_test_tour()) > -1:
                 self.chrono_V = True
-            if sprite.feet.collidelist(self.get_pitLane()) > -1:
+            if sprite.hitbox.collidelist(self.get_pitLane()) > -1:
                 for i in range(len(self.player.speed)):
                     if self.player.speed[i] > 3 :
                         self.player.speed[i] = 3
@@ -108,6 +112,7 @@ class MapManager:
         verf_sortieOuest = []
         test_tour = []
         pitLane = []
+        spawn = []
 
         for obj in tmx_data.objects:
             if obj.type == "collision":
@@ -128,6 +133,8 @@ class MapManager:
                 test_tour.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             if obj.type == "pitLane":
                 pitLane.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "spawn":
+                spawn.append([obj.x, obj.y])
 
 
         # dessiner groupe calque
@@ -135,7 +142,7 @@ class MapManager:
         group.add(self.player)
 
         # save map
-        self.maps[name] = Map(name, walls, sable, herbe, verf_sortieNord, verf_sortieSud, verf_sortieEst, verf_sortieOuest, test_tour, pitLane, group, tmx_data)
+        self.maps[name] = Map(name, walls, sable, herbe, verf_sortieNord, verf_sortieSud, verf_sortieEst, verf_sortieOuest, test_tour, pitLane, spawn, group, tmx_data)
 
     def get_map(self): return self.maps[self.current_map]
     def get_group(self): return self.get_map().group
@@ -148,6 +155,7 @@ class MapManager:
     def get_verf_sortieEst(self): return self.get_map().verf_sortieEst
     def get_test_tour(self): return self.get_map().test_tour
     def get_pitLane(self): return self.get_map().pitLane
+    def get_spawn(self): return self.get_map().spawn
     def get_object(self, name): return self.get_map().tmx_data.get_object_by_name(name)
 
     def draw(self):
